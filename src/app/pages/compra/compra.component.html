@@ -1,0 +1,94 @@
+<form [formGroup]="compraForm" (ngSubmit)="salvar()">
+  <div class="grid">
+    <div class="col-12">
+      <div class="card">
+        @if (isEdicao) {
+        <h5>Editar compra #{{ compraId }}</h5>
+        } @else {
+        <h5>Nova compra</h5>
+        }
+        <div class="p-fluid p-formgrid grid">
+          <div class="field col-12 md:col-6">
+            <label htmlFor="description">Descrição</label>
+            <input pInputText id="description" type="text" formControlName="description"/>
+            <app-mensagem-erro-input [control]="obterControle('description')"></app-mensagem-erro-input>
+          </div>
+
+          <div class="field col-12 md:col-2">
+            <label htmlFor="valor">Valor</label>
+            <p-inputNumber id="valor" mode="currency" locale="pt-BR" currency="BRL" formControlName="amount"></p-inputNumber>
+            <app-mensagem-erro-input [control]="obterControle('amount')"></app-mensagem-erro-input>
+          </div>
+
+          <div class="field col-12 md:col-2">
+            <label htmlFor="boughtAt">Comprado em</label>
+            <p-calendar formControlName="boughtAt" [showButtonBar]="true" dateFormat="dd/mm/yy" [showIcon]="true"></p-calendar>
+            <app-mensagem-erro-input [control]="obterControle('boughtAt')"></app-mensagem-erro-input>
+          </div>          
+  
+          @if (!compraAvulsa && totalDeParcelas > 0) {
+            <div class="field col-12 md:col-2">
+              <label htmlFor="currentInstallment">Parcelas</label>
+              <input pInputText id="currentInstallment" [value]="parcelaAtual +' / '+ totalDeParcelas" disabled="true"/>
+            </div>
+          }
+
+          <div class="field col-12 md:col-4">
+            <label for="nome">Categoria</label>
+            <p-autoComplete formControlName="category" [suggestions]="categoriasFiltrados" (completeMethod)="buscarCategoria($event)" 
+              field="description" [dropdown]="true" required="true">
+            </p-autoComplete>
+            <app-mensagem-erro-input [control]="obterControle('category')"></app-mensagem-erro-input>
+          </div>
+
+          <div class="field col-12 md:col-4">
+            <label htmlFor="paymentMethod">Forma de pagamento</label>
+            <p-dropdown id="paymentMethod" [options]="paymentMethods" placeholder="Selecione a forma de pagamento"
+                        optionLabel="label" optionValue="value" formControlName="paymentMethod"></p-dropdown>
+            <app-mensagem-erro-input [control]="obterControle('paymentMethod')"></app-mensagem-erro-input>
+          </div>
+
+          <div class="field col-12 md:col-2">
+            <label htmlFor="storeType">Tipo de loja</label>
+            <p-dropdown id="storeType" [options]="storeTypes" placeholder="Selecione o tipo de loja"
+                        optionLabel="label" optionValue="value" formControlName="storeType"></p-dropdown>
+            <app-mensagem-erro-input [control]="obterControle('storeType')"></app-mensagem-erro-input>
+          </div>
+
+          @if (!compraAvulsa) {
+            <div class="field col-12 md:col-2">
+              <label htmlFor="period">Período</label>
+              <input pInputText id="period" [value]="compraForm.value.period.month +' / '+ compraForm.value.period.year" disabled="true"/>
+            </div>
+          } @else {
+            <div class="field col-12 md:col-2">
+              <label htmlFor="period">Período</label>
+              <p-dropdown id="period" [options]="periodos" placeholder="Selecione o período" formControlName="period">
+                <ng-template let-period pTemplate="selectedItem">
+                  <div class="flex align-items-center gap-2" *ngIf="compraForm.value.period">
+                      <div>{{ period.month }} / {{ period.year }}</div>
+                  </div>
+                </ng-template>
+                <ng-template let-period pTemplate="item">
+                    <div class="flex align-items-center gap-2">
+                      <div>{{ period.month }} / {{ period.year }}</div>
+                    </div>
+                </ng-template>
+              </p-dropdown>
+              <app-mensagem-erro-input [control]="obterControle('period')"></app-mensagem-erro-input>
+            </div>
+            }
+
+          <div class="field col-12 md:col-2">
+            <button pButton type="button" label="Cancelar" icon="pi pi-times" class="p-button-secondary" (click)="cancelar()"></button>
+          </div>
+          <div class="field col-12 md:col-8">
+          </div>
+          <div class="field col-12 md:col-2">
+            <button pButton [label]="isEdicao ? 'Salvar' : 'Cadastrar'" icon="pi pi-save" [disabled]="compraForm.invalid || !compraAvulsa"></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

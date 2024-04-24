@@ -1,0 +1,29 @@
+<form [formGroup]="categoriaForm" (ngSubmit)="salvarCategoria()">
+  <div class="grid">
+    <div class="col-12">
+      <div class="card">
+        @if (isEdicao) {
+          <h5>Editar categoria</h5> 
+        } @else {
+          <h5>Cadastrar novo categoria</h5>
+        }
+        <div class="p-fluid p-formgrid grid">
+          <div class="field col-12 md:col-6">
+            <label htmlFor="nome">Descrição</label>
+            <input pInputText id="descricao" type="text" formControlName="description"/>
+            <app-mensagem-erro-input [control]="obterControle('description')"></app-mensagem-erro-input>
+          </div>
+          <div class="field col-12 md:col-6"></div>
+          <div class="field col-12 md:col-2">
+            <button pButton type="button" label="Cancelar" icon="pi pi-times" class="p-button-secondary" (click)="cancelar()"></button>
+          </div>
+          <div class="field col-12 md:col-8">
+          </div>
+          <div class="field col-12 md:col-2">
+            <button pButton [label]="isEdicao ? 'Salvar' : 'Cadastrar'" icon="pi pi-save" [disabled]="categoriaForm.invalid"></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

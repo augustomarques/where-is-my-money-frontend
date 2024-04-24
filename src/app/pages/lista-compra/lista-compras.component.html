@@ -1,0 +1,51 @@
+<div class="grid">
+	<div class="col-12">
+		<div class="card">
+            <p-confirmDialog key="confirm" [style]="{width: '350px'}"></p-confirmDialog>
+            <p-toolbar styleClass="mb-4 gap-2">
+                <ng-template pTemplate="left">
+                    <h3 style="margin: 0;">Compras</h3>
+                </ng-template>
+                <ng-template pTemplate="right">
+                    <button pButton routerLink="/compra" icon="pi pi-plus" label="Cadastrar" class="p-button-success mr-2"></button>
+                </ng-template>
+            </p-toolbar>
+            
+            <p-table
+                [value]="compras" 
+                dataKey="id">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th>Descrição</th>
+                        <th>Categoria</th>
+                        <th>Data</th>
+                        <th>Tipo</th>
+                        <th>Valor</th>
+                        <th></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-compra>
+                    <tr>
+                        <td>{{ compra.description }}</td>
+                        <td>{{ compra.category.description }}</td>
+                        <td>{{ compra.boughtAt | date: 'dd/MM/yyyy' }}</td>
+                        <td>{{ getDescricaoTipoCompra(compra) }}</td>
+                        <td>{{ compra.amount | currency:'BRL' }}</td>
+                        <td style="width: 10rem">
+                            <button pButton icon="pi pi-trash" style="font-size: 1rem; margin-right: 10px" 
+                                class="p-button-danger" (click)="confirmarDelecao(compra)" [disabled]="!isCompraAvulsa(compra)"></button>
+                            <button pButton icon="pi pi-pencil" [routerLink]="['/compra', compra.id]" ></button>
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="footer">
+                    <tr>
+                        <td colspan="2">{{compras ? compras.length : 0 }} compras cadastradas</td>
+                        <td colspan="1" class="text-right">Total</td>
+                        <td colspan="3">{{valorTotalCompras | currency: 'BRL'}}</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </div>
+</div>
