@@ -16,14 +16,12 @@
                 dataKey="id">
                 <ng-template pTemplate="header">
                     <tr>
-                        <th>ID</th>
                         <th>Descrição</th>
                         <th></th>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-categoria>
                     <tr>
-                        <td>{{ categoria.id }}</td>
                         <td>{{ categoria.description }}</td>
                         <td style="width: 10rem">
                             <button pButton icon="pi pi-trash" style="font-size: 1rem; margin-right: 10px" class="p-button-danger" (click)="confirmarDelecao(categoria)"></button>

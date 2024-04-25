@@ -2,7 +2,6 @@ import { CommonModule } from "@angular/common";
 import { Component, OnInit } from "@angular/core";
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms";
 import { ActivatedRoute, Router, RouterLink } from "@angular/router";
-import { co } from "@fullcalendar/core/internal-common";
 import { AutoCompleteCompleteEvent, AutoCompleteModule } from "primeng/autocomplete";
 import { ButtonModule } from "primeng/button";
 import { CalendarModule } from "primeng/calendar";
@@ -96,7 +95,6 @@ export class CompraComponent implements OnInit {
   }
 
   private atualizarFormulario(compra: CompraView) {
-    console.log("atualizarFormulario");
     this.compraAvulsa = (TipoCompra[compra.type] === TipoCompra.SINGLE_PURCHASE)
     if(!this.compraAvulsa) {
       this.compraForm.get('description').disable();
@@ -107,9 +105,7 @@ export class CompraComponent implements OnInit {
       this.compraForm.get('storeType').disable();
       this.compraForm.get('paymentMethod').disable();
       this.compraForm.get('category').disable();
-      // this.compraForm.get('period').disable();
       if(TipoCompra[compra.type] == TipoCompra.INSTALLMENT) {
-        console.log("É parcelamento!!!");
         this.totalDeParcelas = compra.installment.installments;
         this.parcelaAtual = compra.currentInstallment;
       }
@@ -135,7 +131,6 @@ export class CompraComponent implements OnInit {
     const id = this.activatedRoute.snapshot.paramMap.get('id');
     if(id) {
       this.compraService.buscarPorId(Number(id)).subscribe(compra => {
-        console.log(compra);
         this.compraForm.patchValue(compra);
         this.compraForm.controls["boughtAt"].patchValue(new Date(compra.boughtAt));
 

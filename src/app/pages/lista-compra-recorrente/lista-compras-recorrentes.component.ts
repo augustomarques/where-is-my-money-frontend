@@ -48,7 +48,7 @@ export class ListaComprasRecorrentesComponent implements OnInit {
 
   confirmarDelecao(compraRecorrente: CompraRecorrente) {
     this.confirmationService.confirm({
-      message: 'Deseja deletar a Compra Recorrente?',
+      message: 'Deseja deletar a Compra Recorrente <b>'+compraRecorrente.description+'</b>?',
       header: 'Confirmação',
       icon: 'pi pi-exclamation-triangle',
       key: 'confirm',
