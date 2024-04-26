@@ -3,3 +3,8 @@ export interface TotalPorPeriodo {
   year: number,
   amount: number
 }
+
+export interface TotalPorCategoria {
+  category: string,
+  amount: number
+}

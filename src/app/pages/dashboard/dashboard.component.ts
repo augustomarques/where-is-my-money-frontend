@@ -7,7 +7,7 @@ import { PeriodoService } from "src/app/service/periodo.service";
 import { TipoCompra } from "src/app/api/tipo-compra.enum";
 import { ChartModule } from "primeng/chart";
 import { RelatorioService } from "src/app/service/relatorio.service";
-import { TotalPorPeriodo } from "src/app/api/report";
+import { TotalPorCategoria, TotalPorPeriodo } from "src/app/api/report";
 
 @Component({
   selector: 'app-dashboard',
@@ -38,6 +38,10 @@ export class DashboardComponent implements OnInit {
   totaisPorPeriodo: TotalPorPeriodo[] = [];
   lineData: any;
 
+  totalPorCategoria: TotalPorCategoria[] = [];
+  dataGraficoTotalPorCategoria: any;
+  optionsGraficoTotalPorCategoria: any;
+
   constructor(
     private periodoService: PeriodoService,
     private compraService: CompraService,
@@ -47,6 +51,7 @@ export class DashboardComponent implements OnInit {
   ngOnInit(): void {
     this.carregarPeriodoAtual();
     this.carregarTotaisPorPeriodo();
+    this.carregarTotalPorCategoria();
   }
 
   private carregarPeriodoAtual() {
@@ -72,6 +77,13 @@ export class DashboardComponent implements OnInit {
     this.relatorioService.buscarValorTotalNosUltimosSeisMeses().subscribe(totaisPorPeriodo => {
       this.totaisPorPeriodo = totaisPorPeriodo;
       this.iniciarGraficoTotaisPorPeriodo();
+    })
+  }
+
+  private carregarTotalPorCategoria() {
+    this.relatorioService.buscarValorTotalPorCategoria().subscribe(totalPorCategoria => {
+      this.totalPorCategoria = totalPorCategoria;
+      this.iniciarGraficoTotaisPorCategoria();
     })
   }
 
@@ -122,7 +134,6 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-
   private iniciarGraficoTotaisPorPeriodo() {
     const documentStyle = getComputedStyle(document.documentElement);
 
@@ -139,5 +150,74 @@ export class DashboardComponent implements OnInit {
           }
       ]
     }
+  }
+
+  private iniciarGraficoTotaisPorCategoria() {
+    const labels = [];
+    const valores = [];
+    
+    this.totalPorCategoria.map(total => {
+        labels.push(total.category);
+        valores.push(total.amount);
+    });
+
+    const documentStyle = getComputedStyle(document.documentElement);
+    const textColor = documentStyle.getPropertyValue('--text-color');
+
+    this.dataGraficoTotalPorCategoria = {
+        labels: labels,
+        datasets: [
+            {
+                data: valores,
+                backgroundColor: this.backgroundColor(documentStyle).slice(0, this.totalPorCategoria.length),
+                hoverBackgroundColor: this.hoverBackgroundColor(documentStyle).slice(0, this.totalPorCategoria.length),
+            }
+        ]
+    };
+
+    this.optionsGraficoTotalPorCategoria = {
+        plugins: {
+            legend: {
+                labels: {
+                    usePointStyle: true,
+                    color: textColor
+                }
+            }
+        }
+    };
+  }
+
+  private backgroundColor(documentStyle: CSSStyleDeclaration): string[] {
+    return [
+      documentStyle.getPropertyValue('--blue-500'), 
+      documentStyle.getPropertyValue('--yellow-500'), 
+      documentStyle.getPropertyValue('--green-500'),
+      documentStyle.getPropertyValue('--pink-500'),
+      documentStyle.getPropertyValue('--indigo-500'),
+      documentStyle.getPropertyValue('--teal-500'),
+      documentStyle.getPropertyValue('--orange-500'),
+      documentStyle.getPropertyValue('--bluegray-500'),
+      documentStyle.getPropertyValue('--purple-500'),
+      documentStyle.getPropertyValue('--red-500'),
+      documentStyle.getPropertyValue('--cyan-500'),
+      documentStyle.getPropertyValue('--primary-500'),
+    ];
+  }
+
+  private hoverBackgroundColor(documentStyle: CSSStyleDeclaration): string[] {
+    return [
+      documentStyle.getPropertyValue('--blue-400'), 
+      documentStyle.getPropertyValue('--yellow-400'), 
+      documentStyle.getPropertyValue('--green-400'),
+      documentStyle.getPropertyValue('--pink-400'),
+      documentStyle.getPropertyValue('--indigo-400'),
+      documentStyle.getPropertyValue('--teal-400'),
+      documentStyle.getPropertyValue('--orange-400'),
+      documentStyle.getPropertyValue('--bluegray-400'),
+      documentStyle.getPropertyValue('--purple-400'),
+      documentStyle.getPropertyValue('--red-400'),
+      documentStyle.getPropertyValue('--cyan-400'),
+      documentStyle.getPropertyValue('--primary-400'),
+    ];
   }
 }
