@@ -11,33 +11,43 @@ import { CompraParceladaComponent } from './pages/compra-parcelada/compra-parcel
 import { CompraRecorrenteComponent } from './pages/compra-recorrente/compra-recorrente.component';
 import { CompraComponent } from './pages/compra/compra.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { LoginComponent } from './pages/login/login.component';
+import { AuthGuard } from './guard/auth.guard';
+import { CadastroUsuarioComponent } from './pages/cadastro-usuario/cadastro-usuario.component';
 
 @NgModule({
     imports: [
         RouterModule.forRoot([
+            { 
+                path: 'auth', 
+                children: [
+                    { path: 'login', component: LoginComponent, canActivate: [AuthGuard] },
+                    { path: 'register', component: CadastroUsuarioComponent, canActivate: [AuthGuard] },
+                ]
+            },
             {
                 path: '', component: AppLayoutComponent,
                 children: [
-                    { path: '', component: DashboardComponent },
+                    { path: '', component: DashboardComponent, canActivate: [AuthGuard] },
 
-                    { path: 'lista-categorias', component: ListaCategoriasComponent },
-                    { path: 'categoria', component: CategoriaComponent },
-                    { path: 'categoria/:id', component: CategoriaComponent },
+                    { path: 'lista-categorias', component: ListaCategoriasComponent, canActivate: [AuthGuard] },
+                    { path: 'categoria', component: CategoriaComponent, canActivate: [AuthGuard] },
+                    { path: 'categoria/:id', component: CategoriaComponent, canActivate: [AuthGuard] },
                     
-                    { path: 'lista-compras', component: ListaComprasComponent },
-                    { path: 'compra', component: CompraComponent },
-                    { path: 'compra/:id', component: CompraComponent },
+                    { path: 'lista-compras', component: ListaComprasComponent, canActivate: [AuthGuard] },
+                    { path: 'compra', component: CompraComponent, canActivate: [AuthGuard] },
+                    { path: 'compra/:id', component: CompraComponent, canActivate: [AuthGuard] },
 
-                    { path: 'lista-compras-recorrentes', component: ListaComprasRecorrentesComponent },
-                    { path: 'compra-recorrente', component: CompraRecorrenteComponent },
-                    { path: 'compra-recorrente/:id', component: CompraRecorrenteComponent },
+                    { path: 'lista-compras-recorrentes', component: ListaComprasRecorrentesComponent, canActivate: [AuthGuard] },
+                    { path: 'compra-recorrente', component: CompraRecorrenteComponent, canActivate: [AuthGuard] },
+                    { path: 'compra-recorrente/:id', component: CompraRecorrenteComponent, canActivate: [AuthGuard] },
 
-                    { path: 'lista-compras-parceladas', component: ListaComprasParceladasComponent },
-                    { path: 'compra-parcelada', component: CompraParceladaComponent },
-                    { path: 'compra-parcelada/:id', component: CompraParceladaComponent },
+                    { path: 'lista-compras-parceladas', component: ListaComprasParceladasComponent, canActivate: [AuthGuard] },
+                    { path: 'compra-parcelada', component: CompraParceladaComponent, canActivate: [AuthGuard] },
+                    { path: 'compra-parcelada/:id', component: CompraParceladaComponent, canActivate: [AuthGuard] },
                 ]
             },
-            { path: 'auth', loadChildren: () => import('./demo/components/auth/auth.module').then(m => m.AuthModule) },
+            { path: 'old-auth', loadChildren: () => import('./demo/components/auth/auth.module').then(m => m.AuthModule) },
             { path: 'landing', loadChildren: () => import('./demo/components/landing/landing.module').then(m => m.LandingModule) },
             { path: 'notfound', component: NotfoundComponent },
             { path: '**', redirectTo: '/notfound' },

@@ -26,7 +26,7 @@
                         "tsConfig": "tsconfig.app.json",
                         "inlineStyleLanguage": "scss",
                         "assets": [
-                            "src/favicon.ico",
+                            "src/favicon.svg",
                             "src/assets"
                         ],
                         "styles": [
@@ -36,6 +36,33 @@
                     },
                     "configurations": {
                         "production": {
+                            "fileReplacements": [
+                                {
+                                  "replace": "src/environments/environment.ts",
+                                  "with": "src/environments/environment.prod.ts"
+                                }
+                            ],
+                            "budgets": [
+                                {
+                                    "type": "initial",
+                                    "maximumWarning": "1mb",
+                                    "maximumError": "5mb"
+                                },
+                                {
+                                    "type": "anyComponentStyle",
+                                    "maximumWarning": "2kb",
+                                    "maximumError": "4kb"
+                                }
+                            ],
+                            "outputHashing": "all"
+                        },
+                        "staging": {
+                            "fileReplacements": [
+                                {
+                                  "replace": "src/environments/environment.ts",
+                                  "with": "src/environments/environment.staging.ts"
+                                }
+                            ],
                             "budgets": [
                                 {
                                     "type": "initial",
@@ -67,6 +94,9 @@
                         "production": {
                             "buildTarget": "sakai-ng:build:production"
                         },
+                        "staging": {
+                            "buildTarget": "sakai-ng:build:staging"
+                        },
                         "development": {
                             "buildTarget": "sakai-ng:build:development"
                         }
@@ -90,7 +120,7 @@
                         "karmaConfig": "karma.conf.js",
                         "inlineStyleLanguage": "scss",
                         "assets": [
-                            "src/favicon.ico",
+                            "src/favicon.svg",
                             "src/assets"
                         ],
                         "styles": [
