@@ -113,7 +113,7 @@ export class DashboardComponent implements OnInit {
       meses.push(this.convertIntToMonth(total.month));
     });
 
-    return meses.reverse();
+    return meses;
   }
 
   private convertIntToMonth(month: number): string {
@@ -136,13 +136,13 @@ export class DashboardComponent implements OnInit {
 
   private iniciarGraficoTotaisPorPeriodo() {
     const documentStyle = getComputedStyle(document.documentElement);
-
+    
     this.lineData = {
-      labels: this.getArrayDeMeseseFromTotaisPorPeriodo(),
+      labels: this.getArrayDeMeseseFromTotaisPorPeriodo().reverse(),
       datasets: [
           {
               label: 'Valor',
-              data: this.totaisPorPeriodo.map(total => total.amount),
+              data: this.totaisPorPeriodo.reverse().map(total => total.amount),
               fill: false,
               backgroundColor: documentStyle.getPropertyValue('--primary-500'),
               borderColor: documentStyle.getPropertyValue('--primary-500'),
