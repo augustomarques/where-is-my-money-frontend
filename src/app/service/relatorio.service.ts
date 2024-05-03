@@ -17,7 +17,7 @@ export class RelatorioService {
     return this.http.get<TotalPorPeriodo[]>(`${this.API}/total-amount-from-last-six-months`);
   }
 
-  buscarValorTotalPorCategoria(): Observable<TotalPorCategoria[]> {
-    return this.http.get<TotalPorCategoria[]>(`${this.API}/amount-by-category`);
+  buscarValorTotalPorCategoria(periodId: number): Observable<TotalPorCategoria[]> {
+    return this.http.get<TotalPorCategoria[]>(`${this.API}/amount-by-category?periodId=${periodId}`);
   }
 }

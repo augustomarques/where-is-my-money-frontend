@@ -62,12 +62,11 @@ export class DashboardComponent implements OnInit {
   ngOnInit(): void {
     this.carregarDadosIniciais();
     this.carregarTotaisPorPeriodo();
-    this.carregarTotalPorCategoria();
   }
 
   filtrar() {
-    console.log('Filtrar por periodo', this.periodoSelecionado);
     this.carregarCompras();
+    this.carregarTotalPorCategoria();
   }
 
   private carregarDadosIniciais() {
@@ -75,6 +74,7 @@ export class DashboardComponent implements OnInit {
       this.periodos = periodos;
       this.periodoSelecionado = periodos[0];
       this.carregarCompras();
+      this.carregarTotalPorCategoria();
     });
   }
 
@@ -98,7 +98,7 @@ export class DashboardComponent implements OnInit {
   }
 
   private carregarTotalPorCategoria() {
-    this.relatorioService.buscarValorTotalPorCategoria().subscribe(totalPorCategoria => {
+    this.relatorioService.buscarValorTotalPorCategoria(this.periodoSelecionado.id).subscribe(totalPorCategoria => {
       this.totalPorCategoria = totalPorCategoria;
       this.iniciarGraficoTotaisPorCategoria();
     })
