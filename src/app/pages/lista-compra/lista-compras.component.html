@@ -1,7 +1,59 @@
 <div class="grid">
+
+    <div class="col-12 lg:col-12 xl:col-12">
+        <div class="card mb-0">
+            <p-panel [toggleable]="true" header="Filtros" collapsed="true">
+                <p-toolbar styleClass="mb-4 gap-2">
+                    <ng-template pTemplate="start">
+                        <label htmlFor="period" style="margin-right: 20px;">Período</label>
+                        <p-dropdown id="period" [options]="periodos" [(ngModel)]="periodoSelecionado">
+                            <ng-template pTemplate="selectedItem">
+                                <div class="flex align-items-center gap-2" *ngIf="periodoSelecionado">
+                                    <div>{{ periodoSelecionado.month }} / {{ periodoSelecionado.year }}</div>
+                                </div>
+                            </ng-template>
+                            <ng-template let-period pTemplate="item">
+                                <div class="flex align-items-center gap-2">
+                                    <div>{{ period.month }} / {{ period.year }}</div>
+                                </div>
+                            </ng-template>
+                        </p-dropdown>
+                    </ng-template>
+                    <ng-template pTemplate="end">
+                        <button pButton icon="pi pi-filter" style="font-size: 1rem" (click)="buscarComprasNoPeriodo()"
+                            label="Filtrar"></button>
+                    </ng-template>
+                </p-toolbar>
+            </p-panel>
+        </div>
+    </div>
+
 	<div class="col-12">
 		<div class="card">
             <p-confirmDialog key="confirm" [style]="{width: '350px'}"></p-confirmDialog>
+            
+            <!-- <p-toolbar styleClass="mb-4 gap-2" >
+                <ng-template pTemplate="start">
+                    <label htmlFor="period" style="margin-right: 20px;">Período</label>
+                    <p-dropdown id="period" [options]="periodos" [(ngModel)]="periodoSelecionado">
+                        <ng-template pTemplate="selectedItem">
+                            <div class="flex align-items-center gap-2" *ngIf="periodoSelecionado">
+                                <div>{{ periodoSelecionado.month }} / {{ periodoSelecionado.year }}</div>
+                            </div>
+                            </ng-template>
+                            <ng-template let-period pTemplate="item">
+                                <div class="flex align-items-center gap-2">
+                                <div>{{ period.month }} / {{ period.year }}</div>
+                                </div>
+                            </ng-template>
+                    </p-dropdown>
+                </ng-template>
+
+                <ng-template pTemplate="end">
+                    <button pButton icon="pi pi-filter" style="font-size: 1rem" (click)="buscarComprasNoPeriodo()" label="Filtrar"></button>
+                </ng-template>
+            </p-toolbar> -->
+            
             <p-toolbar styleClass="mb-4 gap-2">
                 <ng-template pTemplate="left">
                     <h3 style="margin: 0;">Compras</h3>

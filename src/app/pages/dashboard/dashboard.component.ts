@@ -8,20 +8,31 @@ import { TipoCompra } from "src/app/api/tipo-compra.enum";
 import { ChartModule } from "primeng/chart";
 import { RelatorioService } from "src/app/service/relatorio.service";
 import { TotalPorCategoria, TotalPorPeriodo } from "src/app/api/report";
+import { DropdownModule } from "primeng/dropdown";
+import { FormsModule } from "@angular/forms";
+import { ToolbarModule } from "primeng/toolbar";
+import { ButtonModule } from "primeng/button";
+import { PanelModule } from "primeng/panel";
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   standalone: true,
   imports: [
+    ButtonModule,
     CommonModule,
     CurrencyPipe,
-    ChartModule
+    ChartModule,
+    DropdownModule,
+    FormsModule,
+    ToolbarModule,
+    PanelModule
   ]
 })
 export class DashboardComponent implements OnInit {
 
-  periodo: PeriodoView;
+  periodos = [];
+  periodoSelecionado: PeriodoView | undefined;
 
   compras: CompraView[] = [];
   valorTotalCompras: number = 0;
@@ -49,20 +60,26 @@ export class DashboardComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.carregarPeriodoAtual();
+    this.carregarDadosIniciais();
     this.carregarTotaisPorPeriodo();
     this.carregarTotalPorCategoria();
   }
 
-  private carregarPeriodoAtual() {
-    this.periodoService.buscarPeriodoAtual().subscribe(periodo => {
-      this.periodo = periodo;
+  filtrar() {
+    console.log('Filtrar por periodo', this.periodoSelecionado);
+    this.carregarCompras();
+  }
+
+  private carregarDadosIniciais() {
+    this.periodoService.buscar().subscribe(periodos => {
+      this.periodos = periodos;
+      this.periodoSelecionado = periodos[0];
       this.carregarCompras();
-    })
+    });
   }
 
   private carregarCompras() {
-    this.compraService.buscarPorPeriodo(this.periodo.id).subscribe(compras => { 
+    this.compraService.buscarPorPeriodo(this.periodoSelecionado.id).subscribe(compras => { 
       this.compras = compras;
       
       this.calcularValorTotalDasCompras();

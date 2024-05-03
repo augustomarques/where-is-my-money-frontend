@@ -1,133 +1,171 @@
 <div class="grid">
-  <div class="col-12 lg:col-6 xl:col-3">
-      <div class="card mb-0">
-          <div class="flex justify-content-between mb-3">
-              <div>
-                  <span class="block text-500 font-medium mb-3">Lançamentos no período</span>
-                  <div class="text-900 font-medium text-xl">{{ compras.length }}</div>
-              </div>
-              <div class="flex align-items-center justify-content-center bg-blue-100 border-round" [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
-                  <i class="pi pi-shopping-cart text-blue-500 text-xl"></i>
-              </div>
-          </div>
-      </div>
-  </div>
+    
+    <div class="col-12 lg:col-12 xl:col-12">
+        <div class="card mb-0">
+            <p-panel [toggleable]="true" header="Filtros" collapsed="true">
+                <p-toolbar styleClass="mb-4 gap-2">
+                    <ng-template pTemplate="start">
+                        <label htmlFor="period" style="margin-right: 20px;">Período</label>
+                        <p-dropdown id="period" [options]="periodos" [(ngModel)]="periodoSelecionado">
+                            <ng-template pTemplate="selectedItem">
+                                <div class="flex align-items-center gap-2" *ngIf="periodoSelecionado">
+                                    <div>{{ periodoSelecionado.month }} / {{ periodoSelecionado.year }}</div>
+                                </div>
+                            </ng-template>
+                            <ng-template let-period pTemplate="item">
+                                <div class="flex align-items-center gap-2">
+                                    <div>{{ period.month }} / {{ period.year }}</div>
+                                </div>
+                            </ng-template>
+                        </p-dropdown>
+                    </ng-template>
+                    <ng-template pTemplate="end">
+                        <button pButton icon="pi pi-filter" style="font-size: 1rem" (click)="filtrar()"
+                            label="Filtrar"></button>
+                    </ng-template>
+                </p-toolbar>
+            </p-panel>
+        </div>
+    </div>
 
-  <div class="col-12 lg:col-6 xl:col-3">
-    <div class="card mb-0">
-        <div class="flex justify-content-between mb-3">
-            <div>
-                <span class="block text-500 font-medium mb-3">Compras avulsas</span>
-                <div class="text-900 font-medium text-xl">{{ comprasAvulsas.length }}</div>
-            </div>
-            <div class="flex align-items-center justify-content-center bg-orange-100 border-round" [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
-                <i class="pi pi-shopping-cart text-orange-500 text-xl"></i>
+    <div class="col-12 lg:col-6 xl:col-3">
+        <div class="card mb-0">
+            <div class="flex justify-content-between mb-3">
+                <div>
+                    <span class="block text-500 font-medium mb-3">Lançamentos no período</span>
+                    <div class="text-900 font-medium text-xl">{{ compras.length }}</div>
+                </div>
+                <div class="flex align-items-center justify-content-center bg-blue-100 border-round"
+                    [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
+                    <i class="pi pi-shopping-cart text-blue-500 text-xl"></i>
+                </div>
             </div>
         </div>
     </div>
-  </div>
 
-  <div class="col-12 lg:col-6 xl:col-3">
-    <div class="card mb-0">
-        <div class="flex justify-content-between mb-3">
-            <div>
-                <span class="block text-500 font-medium mb-3">Compras parceladas</span>
-                <div class="text-900 font-medium text-xl">{{ comprasParceladas.length }}</div>
-            </div>
-            <div class="flex align-items-center justify-content-center bg-cyan-100 border-round" [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
-                <i class="pi pi-shopping-cart text-cyan-500 text-xl"></i>
+    <div class="col-12 lg:col-6 xl:col-3">
+        <div class="card mb-0">
+            <div class="flex justify-content-between mb-3">
+                <div>
+                    <span class="block text-500 font-medium mb-3">Compras avulsas</span>
+                    <div class="text-900 font-medium text-xl">{{ comprasAvulsas.length }}</div>
+                </div>
+                <div class="flex align-items-center justify-content-center bg-orange-100 border-round"
+                    [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
+                    <i class="pi pi-shopping-cart text-orange-500 text-xl"></i>
+                </div>
             </div>
         </div>
     </div>
-  </div>
 
-  <div class="col-12 lg:col-6 xl:col-3">
-    <div class="card mb-0">
-        <div class="flex justify-content-between mb-3">
-            <div>
-                <span class="block text-500 font-medium mb-3">Compras recorrentes</span>
-                <div class="text-900 font-medium text-xl">{{ comprasRecorrentes.length }}</div>
-            </div>
-            <div class="flex align-items-center justify-content-center bg-purple-100 border-round" [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
-                <i class="pi pi-shopping-cart text-purple-500 text-xl"></i>
-            </div>
-        </div>
-      </div>
-  </div>
-
-  <div class="col-12 lg:col-6 xl:col-3">
-    <div class="card mb-0">
-        <div class="flex justify-content-between mb-3">
-            <div>
-                <span class="block text-500 font-medium mb-3">Valor total no período</span>
-                <div class="text-900 font-medium text-xl">{{ valorTotalCompras | currency:'BRL' }}</div>
-            </div>
-            <div class="flex align-items-center justify-content-center bg-blue-100 border-round" [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
-              <i class="pi pi-dollar text-blue-500 text-xl"></i>
+    <div class="col-12 lg:col-6 xl:col-3">
+        <div class="card mb-0">
+            <div class="flex justify-content-between mb-3">
+                <div>
+                    <span class="block text-500 font-medium mb-3">Compras parceladas</span>
+                    <div class="text-900 font-medium text-xl">{{ comprasParceladas.length }}</div>
+                </div>
+                <div class="flex align-items-center justify-content-center bg-cyan-100 border-round"
+                    [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
+                    <i class="pi pi-shopping-cart text-cyan-500 text-xl"></i>
+                </div>
             </div>
         </div>
     </div>
-  </div>
 
-  
-
-  <div class="col-12 lg:col-6 xl:col-3">
-    <div class="card mb-0">
-        <div class="flex justify-content-between mb-3">
-            <div>
-                <span class="block text-500 font-medium mb-3">Valor das compras avulsas</span>
-                <div class="text-900 font-medium text-xl">{{ valorTotalComprasAvulsas | currency:'BRL' }}</div>
-            </div>
-            <div class="flex align-items-center justify-content-center bg-orange-100 border-round" [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
-              <i class="pi pi-dollar text-orange-500 text-xl"></i>
-            </div>
-        </div>
-    </div>
-  </div>
-
-  
-
-  <div class="col-12 lg:col-6 xl:col-3">
-    <div class="card mb-0">
-        <div class="flex justify-content-between mb-3">
-            <div>
-                <span class="block text-500 font-medium mb-3">Valor das compras parceladas</span>
-                <div class="text-900 font-medium text-xl">{{ valorTotalComprasParceladas | currency:'BRL' }}</div>
-            </div>
-            <div class="flex align-items-center justify-content-center bg-cyan-100 border-round" [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
-              <i class="pi pi-dollar text-cyan-500 text-xl"></i>
+    <div class="col-12 lg:col-6 xl:col-3">
+        <div class="card mb-0">
+            <div class="flex justify-content-between mb-3">
+                <div>
+                    <span class="block text-500 font-medium mb-3">Compras recorrentes</span>
+                    <div class="text-900 font-medium text-xl">{{ comprasRecorrentes.length }}</div>
+                </div>
+                <div class="flex align-items-center justify-content-center bg-purple-100 border-round"
+                    [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
+                    <i class="pi pi-shopping-cart text-purple-500 text-xl"></i>
+                </div>
             </div>
         </div>
     </div>
-  </div>
 
-  
-
-  <div class="col-12 lg:col-6 xl:col-3">
-    <div class="card mb-0">
-        <div class="flex justify-content-between mb-3">
-            <div>
-                <span class="block text-500 font-medium mb-3">Valor das compras recorrentes</span>
-                <div class="text-900 font-medium text-xl">{{ valorTotalComprasRecorrentes | currency:'BRL' }}</div>
-            </div>
-            <div class="flex align-items-center justify-content-center bg-purple-100 border-round" [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
-                <i class="pi pi-dollar text-purple-500 text-xl"></i>
+    <div class="col-12 lg:col-6 xl:col-3">
+        <div class="card mb-0">
+            <div class="flex justify-content-between mb-3">
+                <div>
+                    <span class="block text-500 font-medium mb-3">Valor total no período</span>
+                    <div class="text-900 font-medium text-xl">{{ valorTotalCompras | currency:'BRL' }}</div>
+                </div>
+                <div class="flex align-items-center justify-content-center bg-blue-100 border-round"
+                    [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
+                    <i class="pi pi-dollar text-blue-500 text-xl"></i>
+                </div>
             </div>
         </div>
     </div>
-  </div>
 
-  <div class="col-12 xl:col-6">
-    <div class="card">
-        <h5>Total por mês</h5>
-        <p-chart type="line" [data]="lineData"></p-chart>
-    </div>
-  </div>
 
-  <div class="col-12 xl:col-6">
-    <div class="card">
-        <h5>Total por categoria</h5>
-        <p-chart type="pie" [data]="dataGraficoTotalPorCategoria" [options]="optionsGraficoTotalPorCategoria"></p-chart>
+
+    <div class="col-12 lg:col-6 xl:col-3">
+        <div class="card mb-0">
+            <div class="flex justify-content-between mb-3">
+                <div>
+                    <span class="block text-500 font-medium mb-3">Valor das compras avulsas</span>
+                    <div class="text-900 font-medium text-xl">{{ valorTotalComprasAvulsas | currency:'BRL' }}</div>
+                </div>
+                <div class="flex align-items-center justify-content-center bg-orange-100 border-round"
+                    [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
+                    <i class="pi pi-dollar text-orange-500 text-xl"></i>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
+
+
+
+    <div class="col-12 lg:col-6 xl:col-3">
+        <div class="card mb-0">
+            <div class="flex justify-content-between mb-3">
+                <div>
+                    <span class="block text-500 font-medium mb-3">Valor das compras parceladas</span>
+                    <div class="text-900 font-medium text-xl">{{ valorTotalComprasParceladas | currency:'BRL' }}</div>
+                </div>
+                <div class="flex align-items-center justify-content-center bg-cyan-100 border-round"
+                    [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
+                    <i class="pi pi-dollar text-cyan-500 text-xl"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="col-12 lg:col-6 xl:col-3">
+        <div class="card mb-0">
+            <div class="flex justify-content-between mb-3">
+                <div>
+                    <span class="block text-500 font-medium mb-3">Valor das compras recorrentes</span>
+                    <div class="text-900 font-medium text-xl">{{ valorTotalComprasRecorrentes | currency:'BRL' }}</div>
+                </div>
+                <div class="flex align-items-center justify-content-center bg-purple-100 border-round"
+                    [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
+                    <i class="pi pi-dollar text-purple-500 text-xl"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 xl:col-6">
+        <div class="card">
+            <h5>Total por mês</h5>
+            <p-chart type="line" [data]="lineData"></p-chart>
+        </div>
+    </div>
+
+    <div class="col-12 xl:col-6">
+        <div class="card">
+            <h5>Total por categoria</h5>
+            <p-chart type="pie" [data]="dataGraficoTotalPorCategoria"
+                [options]="optionsGraficoTotalPorCategoria"></p-chart>
+        </div>
+    </div>
 </div>
