@@ -85,7 +85,7 @@
           <div class="field col-12 md:col-8">
           </div>
           <div class="field col-12 md:col-2">
-            <button pButton [label]="isEdicao ? 'Salvar' : 'Cadastrar'" icon="pi pi-save" [disabled]="compraForm.invalid || !compraAvulsa"></button>
+            <button pButton [label]="isEdicao ? 'Salvar' : 'Cadastrar'" icon="pi pi-save" [disabled]="compraForm.invalid || !isHabilitadoParaEdicao"></button>
           </div>
         </div>
       </div>

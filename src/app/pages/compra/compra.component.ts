@@ -11,7 +11,7 @@ import { InputNumberModule } from "primeng/inputnumber";
 import { InputTextModule } from "primeng/inputtext";
 import { TabViewModule } from "primeng/tabview";
 import { Categoria } from "src/app/api/categoria";
-import { Compra, CompraView } from "src/app/api/compra";
+import { CompraView } from "src/app/api/compra";
 import { PaymentMethod } from "src/app/api/payment-method.enum";
 import { StoreType } from "src/app/api/store-type.enum";
 import { TipoCompra } from "src/app/api/tipo-compra.enum";
@@ -49,6 +49,8 @@ export class CompraComponent implements OnInit {
   compraAvulsa: boolean = false;
   totalDeParcelas: number = 0;
   parcelaAtual: number = 0;
+  isHabilitadoParaEdicao: boolean = true;
+  tipoCompra: TipoCompra;
 
   categoriasFiltrados: Categoria[] = [];
   periodos = [];
@@ -98,14 +100,17 @@ export class CompraComponent implements OnInit {
     this.compraAvulsa = (TipoCompra[compra.type] === TipoCompra.SINGLE_PURCHASE)
     if(!this.compraAvulsa) {
       this.compraForm.get('description').disable();
-      this.compraForm.get('amount').disable();
-      this.compraForm.get('installments').disable();
-      this.compraForm.get('currentInstallment').disable();
       this.compraForm.get('boughtAt').disable();
       this.compraForm.get('storeType').disable();
-      this.compraForm.get('paymentMethod').disable();
+      this.compraForm.get('installments').disable();
+      this.compraForm.get('currentInstallment').disable();
       this.compraForm.get('category').disable();
+      
       if(TipoCompra[compra.type] == TipoCompra.INSTALLMENT) {
+        this.compraForm.get('amount').disable();  
+        this.compraForm.get('paymentMethod').disable();
+
+        this.isHabilitadoParaEdicao = false;
         this.totalDeParcelas = compra.installment.installments;
         this.parcelaAtual = compra.currentInstallment;
       }
@@ -135,6 +140,7 @@ export class CompraComponent implements OnInit {
         this.compraForm.controls["boughtAt"].patchValue(new Date(compra.boughtAt));
 
         this.atualizarFormulario(compra);
+        this.tipoCompra = TipoCompra[compra.type];
       });
       this.compraId = Number(id);
       this.isEdicao = true;
@@ -148,16 +154,25 @@ export class CompraComponent implements OnInit {
 
   salvar() {
     const id = this.activatedRoute.snapshot.paramMap.get('id');
+    let compra
 
-    const compra: Compra = {
-      id: id ? Number(id) : null,
-      description: this.compraForm.value.description,
-      amount: this.compraForm.value.amount,
-      boughtAt: this.compraForm.value.boughtAt,
-      storeType: this.compraForm.value.storeType,
-      paymentMethod: this.compraForm.value.paymentMethod,
-      categoryId: this.compraForm.value.category.id,
-      periodId: this.compraForm.value.period.id
+    if(this.tipoCompra == TipoCompra.SINGLE_PURCHASE) {
+      compra = {
+        id: id ? Number(id) : null,
+        description: this.compraForm.value.description,
+        amount: this.compraForm.value.amount,
+        boughtAt: this.compraForm.value.boughtAt,
+        storeType: this.compraForm.value.storeType,
+        paymentMethod: this.compraForm.value.paymentMethod,
+        categoryId: this.compraForm.value.category.id,
+        periodId: this.compraForm.value.period.id
+      }
+    } else {
+      compra = {
+        id: id ? Number(id) : null,
+        amount: this.compraForm.value.amount,
+        paymentMethod: this.compraForm.value.paymentMethod,
+      }
     }
 
     this.compraService.editarOuSalvar(compra).subscribe(() => {

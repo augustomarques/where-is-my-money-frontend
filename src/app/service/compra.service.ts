@@ -26,10 +26,6 @@ export class CompraService {
     return this.http.get<CompraView[]>(`${this.API}?periodId=${periodId}&type=${tipo}`);
   }
 
-  // buscarPorNome(description: string): Observable<Compra[]> {
-  //   return this.http.get<Compra[]>(`${this.API}?query=${description}`);
-  // }
-
   buscarPorId(id: number): Observable<CompraView> {
     return this.http.get<CompraView>(`${this.API}/${id}`);
   }
