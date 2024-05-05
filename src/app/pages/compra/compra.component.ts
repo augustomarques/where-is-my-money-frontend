@@ -156,7 +156,7 @@ export class CompraComponent implements OnInit {
     const id = this.activatedRoute.snapshot.paramMap.get('id');
     let compra
 
-    if(this.tipoCompra == TipoCompra.SINGLE_PURCHASE) {
+    if(this.tipoCompra == null || this.tipoCompra == TipoCompra.SINGLE_PURCHASE) {
       compra = {
         id: id ? Number(id) : null,
         description: this.compraForm.value.description,

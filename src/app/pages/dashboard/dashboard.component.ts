@@ -7,7 +7,7 @@ import { PeriodoService } from "src/app/service/periodo.service";
 import { TipoCompra } from "src/app/api/tipo-compra.enum";
 import { ChartModule } from "primeng/chart";
 import { RelatorioService } from "src/app/service/relatorio.service";
-import { TotalPorCategoria, TotalPorPeriodo } from "src/app/api/report";
+import { TotalPorCategoria, TotalPorCategoriaPorPeriodo, TotalPorPeriodo } from "src/app/api/report";
 import { DropdownModule } from "primeng/dropdown";
 import { FormsModule } from "@angular/forms";
 import { ToolbarModule } from "primeng/toolbar";
@@ -53,6 +53,9 @@ export class DashboardComponent implements OnInit {
   dataGraficoTotalPorCategoria: any;
   optionsGraficoTotalPorCategoria: any;
 
+  totalPorCategoriaPorPeriodo: TotalPorCategoriaPorPeriodo[] = [];
+  dataGraficoTotalPorCategoriaPorPeriodo: any;
+
   constructor(
     private periodoService: PeriodoService,
     private compraService: CompraService,
@@ -62,6 +65,7 @@ export class DashboardComponent implements OnInit {
   ngOnInit(): void {
     this.carregarDadosIniciais();
     this.carregarTotaisPorPeriodo();
+    this.carregarValorTotalPorCategoriaPorPeriodo();
   }
 
   filtrar() {
@@ -123,6 +127,13 @@ export class DashboardComponent implements OnInit {
     this.valorTotalComprasRecorrentes = this.comprasRecorrentes.reduce((acc, compra) => acc + compra.amount, 0);
   }
 
+  private carregarValorTotalPorCategoriaPorPeriodo() {
+    this.relatorioService.buscarValorTotalPorCategoriaPorPeriodo().subscribe(totalPorCategoriaPorPeriodo => {
+      this.totalPorCategoriaPorPeriodo = totalPorCategoriaPorPeriodo;
+      this.iniciarGraficoTotalPorCategoriaPorPeriodo();
+    });
+  }
+
   private getArrayDeMeseseFromTotaisPorPeriodo(): string[] {
     const meses: string[] = [];
 
@@ -149,6 +160,27 @@ export class DashboardComponent implements OnInit {
       case 12: return 'Dezembro';
       default: return '';
     }
+  }
+
+  private iniciarGraficoTotalPorCategoriaPorPeriodo() {
+    const documentStyle = getComputedStyle(document.documentElement);
+
+    const labels = this.getArrayDeMeseseFromTotaisPorPeriodo();
+
+    const datasets = this.totalPorCategoriaPorPeriodo.map((totalPorCategoria, idx )=> {
+      return {
+        label: totalPorCategoria.category,
+        data: totalPorCategoria.amounts.reverse().map(total => total.amount),
+        fill: false,
+        borderColor: this.backgroundColor(documentStyle)[idx],
+        tension: .4
+      }
+    });
+
+    this.dataGraficoTotalPorCategoriaPorPeriodo = {
+      labels: labels,
+      datasets: datasets
+    };
   }
 
   private iniciarGraficoTotaisPorPeriodo() {

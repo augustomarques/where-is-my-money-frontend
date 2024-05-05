@@ -159,11 +159,16 @@
             <h5>Total por mês</h5>
             <p-chart type="line" [data]="lineData"></p-chart>
         </div>
+
+        <div class="card">
+            <h5>Valor por categoria</h5>
+            <p-chart type="line" [data]="dataGraficoTotalPorCategoriaPorPeriodo"></p-chart>
+        </div>
     </div>
 
     <div class="col-12 xl:col-6">
         <div class="card">
-            <h5>Total por categoria</h5>
+            <h5>Total por categoria no período</h5>
             <p-chart type="pie" [data]="dataGraficoTotalPorCategoria"
                 [options]="optionsGraficoTotalPorCategoria"></p-chart>
         </div>

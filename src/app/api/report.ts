@@ -8,3 +8,8 @@ export interface TotalPorCategoria {
   category: string,
   amount: number
 }
+
+export interface TotalPorCategoriaPorPeriodo {
+  category: string,
+  amounts: TotalPorPeriodo[]
+}
