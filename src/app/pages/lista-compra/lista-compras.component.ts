@@ -17,6 +17,7 @@ import { PeriodoService } from 'src/app/service/periodo.service';
 import { PeriodoView } from 'src/app/api/periodo';
 import { FormsModule } from '@angular/forms';
 import { PanelModule } from 'primeng/panel';
+import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
   selector: 'app-lista-compras',
@@ -33,7 +34,8 @@ import { PanelModule } from 'primeng/panel';
     DatePipe,
     DropdownModule,
     FormsModule,
-    PanelModule
+    PanelModule,
+    TooltipModule
   ],
   providers: [
     ConfirmationService

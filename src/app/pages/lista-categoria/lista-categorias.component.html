@@ -13,10 +13,14 @@
             
             <p-table
                 [value]="categorias" 
-                dataKey="id">
+                dataKey="id"
+                sortField="description" 
+                [sortOrder]="1">
                 <ng-template pTemplate="header">
                     <tr>
-                        <th>Descrição</th>
+                        <th pSortableColumn="description">
+                            Descrição <p-sortIcon field="description" />
+                        </th>
                         <th></th>
                     </tr>
                 </ng-template>

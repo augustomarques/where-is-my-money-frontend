@@ -37,20 +37,33 @@
                     <h3 style="margin: 0;">Compras</h3>
                 </ng-template>
                 <ng-template pTemplate="right">
-                    <button pButton routerLink="/compra" icon="pi pi-plus" label="Cadastrar" class="p-button-success mr-2"></button>
+                    <button pButton routerLink="/compra" icon="pi pi-plus" label="Nova compra avulsa" class="p-button-success mr-2"></button>
                 </ng-template>
             </p-toolbar>
             
             <p-table
                 [value]="compras" 
-                dataKey="id">
+                dataKey="id"
+                sortField="boughtAt" 
+                [sortOrder]="-1"
+                >
                 <ng-template pTemplate="header">
                     <tr>
-                        <th>Descrição</th>
-                        <th>Categoria</th>
-                        <th>Data</th>
-                        <th>Tipo</th>
-                        <th>Valor</th>
+                        <th pSortableColumn="description">
+                            Descrição <p-sortIcon field="description" />
+                        </th>
+                        <th>
+                            Categoria
+                        </th>
+                        <th pSortableColumn="boughtAt">
+                            Data <p-sortIcon field="boughtAt" />
+                        </th>
+                        <th pSortableColumn="type">
+                            Tipo <p-sortIcon field="type" />
+                        </th>
+                        <th pSortableColumn="amount">
+                            Valor <p-sortIcon field="amount" />
+                        </th>
                         <th></th>
                     </tr>
                 </ng-template>
@@ -59,7 +72,22 @@
                         <td>{{ compra.description }}</td>
                         <td>{{ compra.category.description }}</td>
                         <td>{{ compra.boughtAt | date: 'dd/MM/yyyy' }}</td>
-                        <td>{{ getDescricaoTipoCompra(compra) }}</td>
+                        <!-- <td>{{ getDescricaoTipoCompra(compra) }}</td> -->
+
+                        <td>
+                            @if (compra.type === 'SINGLE_PURCHASE') {
+                                <i class="pi pi-fw pi-box" style="font-size: 1.5rem" pTooltip="Compra avulsa" tooltipPosition="top"></i>
+                            }
+
+                            @if (compra.type === 'INSTALLMENT') {
+                                <i class="pi pi-fw pi-credit-card" style="font-size: 1.5rem" pTooltip="Compra parcelada" tooltipPosition="top"></i>
+                            }
+
+                            @if (compra.type === 'RECURRING_CHARGE') {
+                                <i class="pi pi-fw pi-sync" style="font-size: 1.5rem" pTooltip="Compra recorrente" tooltipPosition="top"></i>
+                            }
+						</td>
+
                         <td>{{ compra.amount | currency:'BRL' }}</td>
                         <td style="width: 10rem">
                             <button pButton icon="pi pi-trash" style="font-size: 1rem; margin-right: 10px" 

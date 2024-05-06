@@ -13,22 +13,34 @@
             
             <p-table
                 [value]="comprasParceladas" 
-                dataKey="id">
+                dataKey="id"
+                sortField="description" 
+                [sortOrder]="1">
                 <ng-template pTemplate="header">
                     <tr>
-                        <!-- <th>ID</th> -->
-                        <th>Descrição</th>
-                        <th>Categoria</th>
-                        <th>Data da compra</th>
-                        <th>Parcelas</th>
-                        <th>Valor</th>
-                        <th>Status</th>
+                        <th pSortableColumn="description">
+                            Descrição <p-sortIcon field="description" />
+                        </th>
+                        <th>
+                            Categoria
+                        </th>
+                        <th pSortableColumn="boughtAt">
+                            Data da compra <p-sortIcon field="boughtAt" />
+                        </th>
+                        <th pSortableColumn="installments">
+                            Parcelas <p-sortIcon field="installments" />
+                        </th>
+                        <th pSortableColumn="amount">
+                            Valor <p-sortIcon field="amount" />
+                        </th>
+                        <th pSortableColumn="status">
+                            Status <p-sortIcon field="status" />
+                        </th>
                         <th></th>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-compraParcelada>
                     <tr>
-                        <!-- <td>{{ compraParcelada.id }}</td> -->
                         <td>{{ compraParcelada.description }}</td>
                         <td>{{ compraParcelada.category.description }}</td>
                         <td>{{ compraParcelada.boughtAt | date: 'dd/MM/yyyy' }}</td>
