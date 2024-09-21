@@ -1,0 +1,16 @@
+services:
+  prod-where-is-my-money-frontend:
+    image: augustomarques/where-is-my-money-frontend:latest
+    container_name: prod-where-is-my-money-frontend
+    restart: unless-stopped
+    ports:
+      - "1080:80"
+    depends_on:
+      - prod-where-is-my-money-api
+    networks:
+      - prod-where-is-my-money-network
+
+networks:
+  prod-where-is-my-money-network:
+    name: prod-where-is-my-money
+    external: true
